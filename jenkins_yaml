@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: BuildConfig
 metadata:
-  name: myspringpipeline
+  name: mypipeline
   labels:
-    name: myspringpipeline
+    name: mypipeline
   annotations:
-    pipeline.alpha.openshift.io/uses: '[{"name": "myspring", "namespace": "", "kind": "DeploymentConfig"}]'
+    pipeline.alpha.openshift.io/uses: '[{"name": "mypipe", "namespace": "", "kind": "DeploymentConfig"}]'
 spec:
   triggers:
     -
@@ -22,7 +22,7 @@ spec:
   strategy:
     type: JenkinsPipeline
     jenkinsPipelineStrategy:
-      jenkinsfile: "node() {\nstage 'build'\nopenshiftBuild(buildConfig: 'myspring', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'myspring')\nopenshiftScale(deploymentConfig: 'myspring',replicaCount: '2')\n}"
+      jenkinsfile: "node() {\nstage 'build'\nopenshiftBuild(buildConfig: 'mypipe', showBuildLogs: 'true')\nstage 'deploy'\nopenshiftDeploy(deploymentConfig: 'mypipe')\nopenshiftScale(deploymentConfig: 'mypipe',replicaCount: '2')\n}"
   output:
   resources:
   postCommit:
@@ -31,10 +31,10 @@ spec:
 pipeline file
 node('maven') {
 stage 'build'
-openshiftBuild(buildConfig: 'myspring', showBuildLogs: 'true')
+openshiftBuild(buildConfig: 'mypipe', showBuildLogs: 'true')
 stage 'deploy'
-openshiftDeploy(deploymentConfig: 'myspring')
-openshiftScale(deploymentConfig: 'myspring',replicaCount: '2')
+openshiftDeploy(deploymentConfig: 'mypipe')
+openshiftScale(deploymentConfig: 'mypipe',replicaCount: '2')
 }
 
 https://ocp-master.rhneolabs.com:8443/console/java/jmx/attributes?con=spring-boot&main-tab=camel&sub-tab=camel-attributes&nid=root-org.apache.camel-camel-routes
